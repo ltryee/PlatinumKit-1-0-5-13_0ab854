@@ -768,12 +768,18 @@ PLT_CtrlPoint::ProcessEventNotification(PLT_EventSubscriberReference subscriber,
     NPT_XmlElementNode* xml = NULL;
     PLT_Service* service = subscriber->GetService();
     PLT_DeviceData* device  = service->GetDevice();
+    
+    NPT_String uuid, service_id, callback_uri;
+    
+    if (service == NULL || device == NULL) {
+        NPT_CHECK_LABEL_WARNING(NPT_FAILURE, failure);
+    }
 
-    NPT_String uuid = device->GetUUID();
-    NPT_String service_id = service->GetServiceID();
+    uuid = device->GetUUID();
+    service_id = service->GetServiceID();
 
     // callback uri for this sub
-    NPT_String callback_uri = "/" + uuid + "/" + service_id;
+    callback_uri = "/" + uuid + "/" + service_id;
 
     if (notification->m_RequestUrl.GetPath().Compare(callback_uri, true)) {
         NPT_CHECK_LABEL_WARNING(NPT_FAILURE, failure);
